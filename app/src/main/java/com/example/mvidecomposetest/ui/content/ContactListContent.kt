@@ -1,6 +1,5 @@
 package com.example.mvidecomposetest.ui.content
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,7 +20,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -29,17 +27,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.mvidecomposetest.domain.Contact
-import com.example.mvidecomposetest.presentation_legacy.ContactListViewModel
+import com.example.mvidecomposetest.presentation.ContactListComponent
 
 @Composable
 fun Contacts(
-    onAddContactClick: () -> Unit,
-    onContactClick: (Contact) -> Unit
+    component: ContactListComponent,
 ) {
-    val viewModel: ContactListViewModel = viewModel()
-    val contacts by viewModel.contacts.collectAsState()
+    val model by component.model.collectAsState()
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -50,14 +44,14 @@ fun Contacts(
             contentPadding = PaddingValues(8.dp)
         ) {
             items(
-                items = contacts,
+                items = model.contactList,
                 key = {
                     it.id
                 }
             ) {
                 Contact(
                     modifier = Modifier.clickable {
-                        onContactClick(it)
+                        component.onContactClicked(it)
                     },
                     username = it.username,
                     phone = it.phone
@@ -70,7 +64,7 @@ fun Contacts(
                 .padding(16.dp),
             containerColor = MaterialTheme.colorScheme.tertiary,
             onClick = {
-                onAddContactClick()
+                component.onAddContactClicked()
             }
         ) {
             Image(
