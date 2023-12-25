@@ -9,7 +9,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class DefaultAddContactComponent(
-    componentContext: ComponentContext
+    componentContext: ComponentContext,
+    val onContactSaved: () -> Unit
 ) : AddContactComponent, ComponentContext by componentContext {
 
     private val repository = RepositoryImpl
@@ -38,6 +39,7 @@ class DefaultAddContactComponent(
     override fun onSaveContactClicked() {
         val (username, phone) = model.value
         addContactUseCase(username, phone)
+        onContactSaved()
     }
 
     companion object {
