@@ -6,6 +6,7 @@ interface EditContactStore :
     Store<EditContactStore.Intent, EditContactStore.State, EditContactStore.Label> {
 
     data class State(
+        val id: Int,
         val username: String,
         val phone: String
     )
