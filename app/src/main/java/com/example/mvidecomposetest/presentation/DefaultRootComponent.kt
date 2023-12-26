@@ -17,7 +17,7 @@ class DefaultRootComponent(
 
     private val navigation = StackNavigation<Config>()
 
-    val stack: Value<ChildStack<Config, Child>> = childStack(
+    override val stack: Value<ChildStack<*, RootComponent.Child>> = childStack(
         source = navigation,
         initialConfiguration = Config.ContactList,
         handleBackButton = true,
@@ -27,7 +27,7 @@ class DefaultRootComponent(
     private fun child(
         config: Config,
         componentContext: ComponentContext,
-    ): Child {
+    ): RootComponent.Child {
         return when (config) {
             Config.AddContact -> {
                 val component = DefaultAddContactComponent(
@@ -36,7 +36,7 @@ class DefaultRootComponent(
                         navigation.pop()
                     }
                 )
-                Child.AddContact(component)
+                RootComponent.Child.AddContact(component)
             }
 
             Config.ContactList -> {
@@ -49,7 +49,7 @@ class DefaultRootComponent(
                         navigation.push(Config.EditContact(contact = it))
                     }
                 )
-                Child.ContactList(component)
+                RootComponent.Child.ContactList(component)
             }
 
             is Config.EditContact -> {
@@ -60,20 +60,12 @@ class DefaultRootComponent(
                         navigation.pop()
                     }
                 )
-                Child.EditContact(component)
+                RootComponent.Child.EditContact(component)
             }
         }
     }
 
-    sealed interface Child {
-
-        class AddContact(val component: AddContactComponent) : Child
-        class ContactList(val component: ContactListComponent) : Child
-
-        class EditContact(val component: EditContactComponent) : Child
-    }
-
-    sealed interface Config : Parcelable {
+    private sealed interface Config : Parcelable {
 
         @Parcelize
         object ContactList : Config
