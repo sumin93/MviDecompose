@@ -1,5 +1,6 @@
 package com.example.mvidecomposetest.presentation
 
+import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.mvikotlin.core.store.Store
 
 interface AddContactStore :

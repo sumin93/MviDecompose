@@ -1,6 +1,7 @@
 package com.example.mvidecomposetest.presentation
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
 import com.example.mvidecomposetest.core.componentScope
@@ -15,7 +16,10 @@ class DefaultContactListComponent(
     val onAddContactRequested: () -> Unit
 ) : ContactListComponent, ComponentContext by componentContext {
 
-    private lateinit var store: ContactListStore
+    private val store: ContactListStore = instanceKeeper.getStore {
+        val storeFactory = ContactListStoreFactory()
+        storeFactory.create()
+    }
 
     init {
         componentScope().launch {
