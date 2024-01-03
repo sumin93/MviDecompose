@@ -10,8 +10,9 @@ import com.example.mvidecomposetest.ui.content.RootContent
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val component = DefaultRootComponent(defaultComponentContext())
         setContent {
-            RootContent(component = DefaultRootComponent(defaultComponentContext()))
+            RootContent(component = component)
         }
     }
 }
